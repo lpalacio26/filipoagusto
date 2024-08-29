@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>filipo answers</title>
+    <link rel="icon" href="img/filipo_copy.png" type="image/x-icon" />
+    <style>
+      body {
+        font-size: courier;
+        background-color: black;
+        color: blue;
+        display: flex;
+        margin: 0 auto;
+        font-family: courier;
+      }
+      .admin-dashboard {
+        margin-left: 50px;
+        max-width: 600px;
+        width: 600px;
+        font-family: courier;
+        margin-right: 50px;
+      }
+
+      .question-list {
+        margin-top: 20px;
+      }
+
+      .question-item {
+        border: 1px solid blue;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-style: inset;
+        overflow-wrap: break-word;
+      }
+
+      .question-text {
+        font-weight: bold;
+        margin-bottom: 5px;
+        overflow-wrap: break-word;
+        width: 85%;
+      }
+
+      .answer-input {
+        width: 100%;
+        height: 100px;
+        margin-bottom: 5px;
+        color: blue;
+        background-color: black;
+        border: 1px solid blue;
+        border-style: inset;
+        font-family: courier;
+        max-width: 100%;
+        min-width: 100%;
+        margin-right: 5px;
+      }
+
+      .submit-answer-button {
+        display: block;
+        width: 100%;
+        padding: 8px;
+        background-color: blue;
+        color: black;
+        border: none;
+        cursor: pointer;
+        font-family: courier;
+      }
+
+      .submit-answer-button:hover {
+        opacity: 0.8;
+      }
+
+      .delete-button {
+        display: block;
+        width: 60px;
+        height: 20px;
+        padding: 4px;
+        background-color: blue;
+        color: black;
+        border: none;
+        cursor: pointer;
+        font-family: courier;
+        font-size: 10px;
+      }
+
+      .delete-button:hover {
+        opacity: 0.8;
+      }
+
+      .news-form {
+        min-width: 400px;
+        max-width: 400px;
+        min-height: 200px;
+        max-height: 600px;
+        background-color: black;
+        border: 1px solid blue;
+        border-style: inset;
+        color: blue;
+        flex-direction: column;
+        font-family: courier;
+
+      }
+
+      .news form{
+        flex-direction: column;
+      }
+
+      .news-button {
+        background-color: black;
+        border: 1px solid blue;
+        border-style: inset;
+        color: blue;
+        font-family: courier;
+        margin: auto auto;
+      }
+
+      .news-button:hover {
+        background-color: blue;
+        color: black;
+      }
+
+      .news-button:active {
+        background-color: blue;
+        color: black;
+        opacity: 0.8;
+      }
+
+      
+      
+    </style>
+  </head>
+  <body>
+    <!-- Admin Dashboard -->
+    <section class="admin-dashboard">
+      <h2>filipo answers</h2>
+
+      <!-- Container for displaying questions -->
+      <div class="question-list">
+        <!-- Questions will be dynamically added here -->
+      </div>
+    </section>
+
+    <section class="news">
+      <h2>news</h2>
+      <form name="news-form" id="textForm" autocomplete="off">
+        <textarea form="news-form" id="textFuck" name="text" class="news-form"></textarea>
+        <br>
+        <button style='margin-top: 5px;' type="submit" class="news-button">update news</button>
+      </form>
+    </section>
+    <script src="admin.js"></script>
+  </body>
+</html>

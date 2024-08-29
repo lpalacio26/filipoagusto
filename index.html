@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <title>radio filipo a gusto</title>
+    <link rel="icon" href="img/filipo_copy.png" type="image/x-icon" />
+    <style>
+      /* Resetting default styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: black;
+        color: #fb4b28;
+        font-family: "Courier New", Courier, monospace;
+        background-color: black; /* Set a base background color */
+        background-image: linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.2) 1px,
+            transparent 1px
+          ),
+          linear-gradient(to right, rgba(0, 0, 0, 0.2) 1px, transparent 1px); /* Create horizontal and vertical lines */
+        background-size: 100% 10px, 10px 100%; /* Set the size of the lines */
+        font-size: 2vw;
+        overflow: hidden;
+      }
+
+      /* Define scanline animation */
+      @keyframes scanlines-animation {
+        from {
+          background-position: 0 0;
+        }
+        to {
+          background-position: 0 20px; /* Adjust the scanline spacing */
+        }
+      }
+
+      /* Apply animation to the body background */
+      body {
+        background-image: linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.2) 1px,
+            transparent 1px
+          ),
+          linear-gradient(to right, rgba(0, 0, 0, 0.2) 1px, transparent 1px); /* Create horizontal and vertical lines */
+        background-size: 100% 10px, 10px 100%; /* Set the size of the lines */
+        animation: scanlines-animation 1s linear infinite; /* Apply animation */
+      }
+
+      .container {
+        display: flex;
+        height: 100vh;
+        position: relative;
+        flex-flow: row-reverse;
+      }
+
+      .sidebar {
+        overflow: hidden;
+        background-color: black;
+        position: relative;
+        width: 300px; /* Adjust width as needed */
+        border: solid blue 2px;
+        border-style: inset;
+        padding: 20px 5px 20px 0;
+        display: flex; /* Add this line */
+        flex-direction: column; /* Add this line */
+      }
+
+      .sidebar-inside {
+        overflow-y: hidden; /* Change overflow to auto */
+        flex-grow: 1; /* Add this line */
+      }
+
+      /* Retro styling */
+
+      .sidebar-text {
+        color: blue;
+        font-size: 14px;
+        line-height: 1.5;
+        text-align: right;
+        overflow: hidden;
+      }
+
+      .matrix {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -10;
+        pointer-events: none;
+      }
+
+      ul {
+        display: flex;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .bottom-navbar {
+        display: flex;
+        position: fixed;
+        left: 0;
+        bottom: 0;
+      }
+
+      .bottom-navbar img {
+        cursor: pointer;
+      }
+
+      /* Add a black background color to the top navigation */
+      .bottom-navbar {
+        overflow: hidden;
+      }
+
+      /* Change the color of links on hover */
+      .bottom-navbar img:hover {
+        background-color: blue;
+        color: black;
+      }
+
+      .bottom-navbar img {
+        max-width: 120px; /* Set the maximum width */
+        max-height: 200px; /* Set the maximum height */
+        width: auto; /* Let the browser adjust the width */
+        height: auto; /* Let the browser adjust the height */
+        margin: 5px 20px;
+      }
+
+      #logo {
+        position: absolute;
+        bottom: -70vh;
+      }
+
+      .window {
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        background-color: black;
+        border: 2px solid blue;
+        border-radius: 10px;
+        text-align: center;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        color: blue;
+        overflow: hidden;
+        border-style: inset;
+      }
+
+      .window-header {
+        background-color: blue;
+        color: black;
+        padding: 5px 5px 5px 20px;
+        border-bottom: 2px solid black;
+        letter-spacing: 5px;
+        font-size: 12px;
+        text-align: left;
+      }
+
+      .window-buttons {
+        display: flex;
+        justify-content: right;
+        padding: 5px;
+      }
+
+      .window-button {
+        width: 20px;
+        height: 20px;
+        background-color: black;
+        color: blue;
+        font-weight: bold;
+        font-size: 16px;
+        cursor: pointer;
+        border: 2px solid blue;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .window-content {
+        background-image: url("https://i.pinimg.com/originals/5a/93/4e/5a934e84f67d2a61a118ec95b1d6cb74.gif");
+        background-repeat: no-repeat;
+        background-size: cover; /* Cover the entire window */
+        padding: 20px;
+        height: 100%;
+        border: 5px solid blue;
+        border-style: inset;
+      }
+
+      .places-window {
+        left: 20%;
+        top: 40%;
+        transform: translate(-50%, -50%);
+        width: 350px;
+        height: 350px;
+      }
+
+      .places-content {
+        background-image: url("img/computer.png");
+      }
+
+      .sounds-window {
+        left: 60%;
+        top: 60%;
+        transform: translate(-50%, -50%);
+        background-image: none;
+        width: 300px;
+        height: 600px;
+      }
+
+      .sounds-content {
+        background-image: url("img/computer.png");
+        overflow-y: auto;
+        object-fit: contain;
+      }
+
+      .dj-set {
+        width: 200px;
+        height: 200px;
+        background-color: red;
+        margin: 10px auto 40px auto;
+        overflow: hidden; /* Ensure content stays within the container */
+        position: relative; /* Positioning context for the images */
+        border: 2px blue solid;
+        border-style: inset;
+        cursor: pointer;
+      }
+
+      .dj-set-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Ensure the image covers the entire container */
+        position: absolute; /* Position the image absolutely within the container */
+        top: 0; /* Align to the top of the container */
+        left: 0; /* Align to the left of the container */
+      }
+
+      .messages-window {
+        left: 40%;
+        top: 60%;
+        transform: translate(-50%, -50%);
+        background-color: none;
+        width: 350px;
+        height: 400px;
+      }
+
+      .messages-content {
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        background-image: none;
+        object-fit: contain;
+        font-size: 12px;
+        justify-content: left;
+        overflow-wrap: break-word;
+      }
+
+      .messages-content ul {
+        flex-direction: column;
+        text-align: left;
+      }
+
+      .window-text {
+        position: relative;
+        top: 30%;
+        background-color: black;
+        font-size: 20px;
+      }
+
+      .people-window {
+        left: 80%;
+        top: 40%;
+        transform: translate(-50%, -50%);
+        width: 450px;
+        height: 450px;
+      }
+
+      .people-content {
+        background-image: url("img/computer.png");
+      }
+
+      .loading-dots::after {
+        content: "";
+        font-size: 24px;
+        animation: loading 1s infinite;
+      }
+
+      @keyframes loading {
+        0% {
+          content: ".";
+        }
+        33% {
+          content: "..";
+        }
+        66% {
+          content: "...";
+        }
+      }
+
+      .scrolling-text-container {
+        color: #fff;
+        padding: 10px;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        overflow: hidden; /* This ensures that the text doesn't overflow from its container */
+        background-color: black;
+        border: solid blue 2px;
+        border-style: inset;
+      }
+
+      .scrolling-text {
+        white-space: nowrap; /* Prevents text from wrapping */
+        animation: scrollLeft 20s linear infinite; /* Adjust the animation duration as needed */
+        font-size: 16px;
+        color: blue;
+      }
+
+      @keyframes scrollLeft {
+        0% {
+          transform: translateX(100%);
+        }
+        100% {
+          transform: translateX(-150%);
+        }
+      }
+
+      /* Style the scrollbar */
+      /* For Chrome, Safari, and Opera */
+      .sounds-content::-webkit-scrollbar {
+        display: none; /* Set the width of the scrollbar */
+      }
+
+      /* Track */
+      .sounds-content::-webkit-scrollbar-track {
+        background: blue; /* Color of the track */
+      }
+
+      /* Handle */
+      .sounds-content::-webkit-scrollbar-thumb {
+        background: blue; /* Color of the handle */
+      }
+
+      /* For Firefox */
+      .sounds-content {
+        scrollbar-width: none; /* Set the width of the scrollbar */
+      }
+
+      /* Style the scrollbar */
+      /* For Chrome, Safari, and Opera */
+      .messages-content::-webkit-scrollbar {
+        display: none; /* Set the width of the scrollbar */
+      }
+
+      /* Track */
+      .messages-content::-webkit-scrollbar-track {
+        background: blue; /* Color of the track */
+      }
+
+      /* Handle */
+      .messages-content::-webkit-scrollbar-thumb {
+        background: blue; /* Color of the handle */
+      }
+
+      /* For Firefox */
+      .messages-content {
+        scrollbar-width: none; /* Set the width of the scrollbar */
+      }
+
+      #audioPlayer {
+        display: none;
+      }
+
+      /* CSS for music player */
+      #audioPlayerContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: black;
+        position: absolute;
+        bottom: 0;
+        font-size: 14px;
+        color: blue;
+        border: 1px solid blue;
+        border-style: inset;
+        width: 100%;
+        padding-top: 20px;
+        padding-bottom: 10px;
+      }
+
+      #audioTitle {
+        margin-bottom: 10px;
+        overflow-wrap: break-word;
+      }
+
+      #playerControls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: blue;
+      }
+
+      #progressBarContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        margin-top: 10px;
+        width: 90%;
+      }
+
+      #progressBar {
+        width: 100%;
+      }
+
+      #timeContainer {
+        display: flex;
+        align-items: center;
+        margin-top: 5px;
+      }
+
+      #playPauseButton {
+        background-color: blue;
+        border: none;
+        padding: 2px;
+      }
+
+      #progressBar {
+        border-radius: none;
+      }
+
+      .messages-content input {
+        background-color: black;
+        border: 1px blue solid;
+        border-style: inset;
+        color: blue;
+        font-family: courier;
+        padding: 3px;
+        margin-bottom: 5px;
+        margin-bottom: 10px;
+      }
+
+      .messages-content button {
+        background-color: black;
+        border: 1px blue solid;
+        border-style: inset;
+        color: blue;
+        font-family: courier;
+        padding: 3px;
+        margin-bottom: 60px;
+      }
+
+      button:hover {
+        background-color: blue;
+        color: black;
+        cursor: pointer;
+      }
+
+      button:active {
+        background-color: blue;
+        color: black;
+        opacity: 0.8;
+      }
+
+      /* Add this CSS at the end of your existing styles */
+      @media only screen and (max-width: 600px) {
+        /* Adjust styles for mobile devices */
+
+        body {
+          font-size: 4vw; /* Increase font size for better readability on smaller screens */
+          overflow-y: auto; /* Allow scrolling on smaller screens */
+          overflow-x: hidden;
+        }
+
+        .container {
+          flex-direction: column-reverse; /* Display windows in a column */
+        }
+
+        .bottom-navbar {
+          display: none; /* Hide the bottom navbar on mobile */
+        }
+
+        .window {
+          display: block !important;
+          width: 100%; /* Set window width to 100% on mobile */
+          height: 400px; /* Allow height to adjust based on content */
+          max-height: none; /* Remove maximum height */
+          padding-bottom: 20px;
+        }
+
+        .window-header {
+          text-align: center; /* Center align window header */
+        }
+
+        .window-buttons {
+          display: none;
+          justify-content: center; /* Center align window buttons */
+        }
+
+        .sidebar {
+          min-height: 200px;
+          width: 100%;
+          position: absolute;
+        }
+
+        .window-button {
+          display: none;
+        }
+
+        .window-content {
+          padding: 10px; /* Add padding to window content */
+        }
+
+        .dj-set {
+          width: 60%; /* Set DJ set width to 100% on mobile */
+          margin: 20px auto; /* Center DJ sets */
+        }
+
+        .sounds-window{
+          height: 450px;
+        }
+
+        #logo {
+          display: none;
+        }
+      }
+
+      /* Default styles for placeholder text */
+      ::placeholder {
+        color: blue; /* Set placeholder text color to blue */
+      }
+
+      /* Media query for mobile devices */
+      @media only screen and (max-width: 600px) {
+        /* Adjust placeholder text color for mobile */
+        ::-webkit-input-placeholder {
+          /* For WebKit/Blink browsers */
+          color: blue;
+        }
+        :-moz-placeholder {
+          /* For Mozilla Firefox */
+          color: blue;
+          opacity: 1; /* Set opacity for Firefox */
+        }
+        ::-moz-placeholder {
+          /* For Mozilla Firefox */
+          color: blue;
+          opacity: 1; /* Set opacity for Firefox */
+        }
+        :-ms-input-placeholder {
+          /* For Microsoft Edge */
+          color: blue;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas class="matrix" id="matrix"></canvas>
+
+    <section class="container">
+      <img id="logo" src="img/filipo.png" alt="filipo a gusto" />
+      <header class="scrolling-text-container">
+        <div class="scrolling-text">
+          <span
+            >radio filipo a gusto invites . . . tea time . . . keratokone . . .
+            n’djily . . . dileysdiley . . . bouncing vitamine . . . armandotek .
+            . . benk . . . ricardo davis . . . dj trust . . . and many more . .
+            .</span
+          >
+        </div>
+      </header>
+
+      <!-- LIVEFEED WINDOW -->
+      <div class="window-container">
+        <section class="window" id="livefeed-window">
+          <div class="window-header">livefeed</div>
+
+          <div class="window-buttons" style="display: none">
+            <div class="window-button" id="close-button">X</div>
+          </div>
+          <div class="window-content">
+            <div class="window-text">
+              <p>filipo a gusto is offline</p>
+              <p class="loading-dots"></p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- PLACES WINDOW -->
+      <section
+        class="window places-window"
+        id="places-window"
+        style="display: none"
+      >
+        <div class="window-header">places</div>
+
+        <div class="window-buttons">
+          <div class="window-button" id="places-close-button">X</div>
+        </div>
+        <div class="window-content places-content"></div>
+      </section>
+
+      <!-- PEOPLE WINDOW -->
+      <section
+        class="window people-window"
+        id="people-window"
+        style="display: none"
+      >
+        <div class="window-header">people</div>
+
+        <div class="window-buttons">
+          <div class="window-button" id="people-close-button">X</div>
+        </div>
+        <div class="window-content people-content"></div>
+      </section>
+
+      <!-- MESSAGES WINDOW -->
+      <section
+        class="window messages-window"
+        id="messages-window"
+        style="display: none"
+      >
+        <div class="window-header">messages</div>
+
+        <div class="window-buttons">
+          <div class="window-button" id="messages-close-button">X</div>
+        </div>
+        <div class="window-content messages-content">
+          <!-- Message log will be displayed here -->
+          <ul id="messageLog"></ul>
+          <!-- Input fields for display name and question -->
+          <input
+            type="text"
+            id="displayNameInput"
+            placeholder="your name"
+            maxlength="30"
+            style="margin-top: 15px"
+          />
+          <input
+            type="text"
+            id="questionInput"
+            placeholder="your question"
+            maxlength="250"
+          />
+          <button id="submitQuestionButton">send question</button>
+        </div>
+      </section>
+
+      <!-- SOUNDS WINDOW -->
+      <section
+        class="window sounds-window"
+        id="sounds-window"
+        style="display: none"
+      >
+        <div class="window-header">sounds</div>
+
+        <div class="window-buttons">
+          <div class="window-button" id="sounds-close-button">X</div>
+        </div>
+        <div class="window-content sounds-content">
+          <div
+            class="dj-set"
+            onclick="playAudio('https://filipo-djsets.s3.amazonaws.com/TEA+TIME+((((_))))+Radio+Sessions+_01052024_+((((_)))).mp3', 'tea+time+((((_))))+radio+sessions+_01052024_+((((_)))).mp3')"
+          >
+            <img class="dj-set-image" src="/img/sounds/teatime_03.png" />
+          </div>
+
+          <div
+            class="dj-set"
+            onclick="playAudio('https://filipo-djsets.s3.amazonaws.com/LorenzoPalacio+((((_))))+Radio+Sessions+_20032024_+((((_)))).mp3', 'lorenzopalacio+((((_))))+radio+sessions+_20032024_+((((_)))).mp3')"
+          >
+            <img class="dj-set-image" src="/img/sounds/lp_01.png" />
+          </div>
+
+          <div
+            class="dj-set"
+            onclick="playAudio('https://filipo-djsets.s3.amazonaws.com/N\'DJILY+((((_))))+Radio+Sessions+_09042024_+((((_)))).mp3', 'n\'djily+((((_))))+radio+sessions+_09042024_+((((_)))).mp3')"
+          >
+            <img class="dj-set-image" src="/img/sounds/ndjilly.png" />
+          </div>
+
+          <div
+            class="dj-set"
+            onclick="playAudio('https://filipo-djsets.s3.amazonaws.com/Bouncing+Vitamine+((((_))))+Radio+Sessions+_18032024_+((((_)))).mp3', 'bouncing+vitamine+((((_))))+radio+sessions+_18032024_+((((_)))).mp3')"
+          >
+            <img class="dj-set-image" src="/img/sounds/vitamine.png" />
+          </div>
+
+          <div
+            class="dj-set"
+            onclick="playAudio('https://filipo-djsets.s3.amazonaws.com/STANLEY+_3+((((_))))+Radio+Sessions+_13042024_+((((_)))).mp3', 'stanley+_3+((((_))))+radio+sessions+_13042024_+((((_)))).mp3')"
+          >
+            <img class="dj-set-image" src="/img/sounds/stanley.png" />
+          </div>
+
+          <div
+            class="dj-set"
+            onclick="playAudio('https://filipo-djsets.s3.amazonaws.com/DJ+TEA+TIME+((((_))))+Radio+Sessions+_12042024_+((((_)))).mp3', 'dj+tea+time+((((_))))+radio+sessions+_12042024_+((((_)))).mp3')"
+          >
+            <img class="dj-set-image" src="/img/sounds/teatime_04.png" />
+          </div>
+
+          <div
+            class="dj-set"
+            onclick="playAudio('https://filipo-djsets.s3.amazonaws.com/DJKERATOKONE+-+((((_))))+Radio+Sessions+_11022024_+((((_)))).mp3', 'djkeratokone+-+((((_))))+radio+sessions+_11022024_+((((_)))).mp3')"
+          >
+            <img class="dj-set-image" src="/img/sounds/keratokone.png" />
+          </div>
+
+          <div
+            class="dj-set"
+            onclick="playAudio('https://filipo-djsets.s3.amazonaws.com/DJBENK+-+((((_))))+Radio+Sessions+_15022024_+((((_)))).mp3', 'djbenk+-+((((_))))radio+sessions+_15022024_+((((_)))).mp3')"
+          >
+            <img class="dj-set-image" src="/img/sounds/djbenk.png" />
+          </div>
+
+          <div
+            class="dj-set"
+            onclick="playAudio('https://filipo-djsets.s3.amazonaws.com/Radio+Sessions+_19092023_.mp3', 'radio+sessions+_19092023_.mp3')"
+          >
+            <img class="dj-set-image" src="/img/sounds/fp.png" />
+          </div>
+
+          <div
+            class="dj-set"
+            onclick="playAudio('https://filipo-djsets.s3.amazonaws.com/Radio+Sessions+_27092023_+%40DileysDiley.mp3', 'radio+sessions+_27092023_+%40dileysdiley.mp3')"
+          >
+            <img class="dj-set-image" src="/img/sounds/dd_03.png" />
+          </div>
+          <div
+            class="dj-set"
+            onclick="playAudio('https://filipo-djsets.s3.amazonaws.com/Radio+Sessions+_03102023_+%40TiTi.mp3', 'radio+sessions+_03102023_+%40titi.mp3')"
+          >
+            <img class="dj-set-image" src="/img/sounds/titi_02.png" />
+          </div>
+          <div
+            class="dj-set"
+            onclick="playAudio('https://filipo-djsets.s3.amazonaws.com/Radio+Sessions+*04102023*+%40DJ+Ritch.mp3', 'radio+sessions+*04102023*+%40dj+ritch.mp3')"
+          >
+            <img class="dj-set-image" src="/img/sounds/dj_ritch.png" />
+          </div>
+          <div
+            class="dj-set"
+            onclick="playAudio('https://filipo-djsets.s3.amazonaws.com/Radio+Sessions+_12102023_+%40DJ+TeaTime+b2b+DJ+Marcelo.mp3', 'radio+sessions+_12102023_+%40dj+teatime+b2b+dj+marcelo.mp3')"
+          >
+            <img class="dj-set-image" src="/img/sounds/teatime_2.jpg" />
+          </div>
+          <div
+            class="dj-set"
+            onclick="playAudio('https://filipo-djsets.s3.amazonaws.com/DILEYSDILEY+%3C3+%3B(+-+((((*))))+Radio+Sessions+*24102023*+((((*)))).mp3', 'dileysdiley+%3C3+%3B(+-+((((*))))+radio+sessions+*24102023*+((((*)))).mp3')"
+          >
+            <img class="dj-set-image" src="/img/sounds/filipodd.jpg" />
+          </div>
+
+          <div
+            class="dj-set"
+            onclick="playAudio('https://filipo-djsets.s3.amazonaws.com/ARMANDOTEK+_3+%3B(+-+((((_))))+Radio+Sessions+_29012024_+((((_)))).mp3','armandotek+_3+%3B(+-+((((_))))+radio+sessions+_29012024_+((((_)))).mp3' )"
+          >
+            <img class="dj-set-image" src="/img/sounds/armandotek.jpg" />
+          </div>
+          <div
+            class="dj-set"
+            onclick="playAudio('https://filipo-djsets.s3.amazonaws.com/DJ+TEATIME+_3-+((_))+Radio+Sessions+_30012024_+((_)).mp3', 'dj+teatime+_3-+((_))+radio+sessions+_30012024_+((_)).mp3')"
+          >
+            <img class="dj-set-image" src="/img/sounds/teatime.png" />
+          </div>
+          <div
+            class="dj-set"
+            onclick="playAudio('https://filipo-djsets.s3.amazonaws.com/DJ+RICHI+b2b+GsusnotJesus+_3-+((_))+Radio+Sessions+_30012024_+((_))-Season2.mp3', 'dj+richi+b2b+gsusnotjesus+_3-+((_))+radio+sessions+_30012024_+((_)).mp3')"
+          >
+            <img class="dj-set-image" src="/img/sounds/ricky.png" />
+          </div>
+          <div
+            class="dj-set"
+            onclick="playAudio('https://filipo-djsets.s3.amazonaws.com/DILEYSDILEY+%3C3+%3B(+-+((((*))))+Radio+Sessions+*01022024*+((((*)))).mp3', 'dileysdiley+%3C3+%3B(+-+((((*))))+radio+sessions+*01022024*+((((*)))).mp3' )"
+          >
+            <img class="dj-set-image" src="/img/sounds/dileysdiley_2.jpg" />
+          </div>
+        </div>
+      </section>
+      <!--SIDEBAR -->
+      <article class="sidebar" id="sidebar">
+        <div class="sidebar-inside">
+          <p class="sidebar-text" id="typing-text"></p>
+
+          <!-- HTML for music player -->
+          <div id="audioPlayerContainer">
+            <div
+              id="audioTitle"
+              style="width: 80%; text-align: center; line-height: 1.5"
+            >
+              play a set . . .
+            </div>
+            <audio id="audioPlayer" controls>
+              <source src="" type="audio/mp3" />
+              Your browser does not support the audio element.
+            </audio>
+            <div id="playerControls">
+              <button id="playPauseButton">&#9658;</button>
+              <input
+                type="range"
+                id="volumeControl"
+                min="0"
+                max="100"
+                value="100"
+              />
+            </div>
+            <div id="progressBarContainer">
+              <progress id="progressBar" value="0" max="100"></progress>
+              <div id="timeContainer">
+                <span id="currentTime">0:00</span> /
+                <span id="duration">0:00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- NAVBAR -->
+    <nav class="bottom-navbar">
+      <ul>
+        <li><img id="placesNavbarImage" src="img/eye.png" alt="places" /></li>
+        <li>
+          <img id="peopleNavbarImage" src="img/crystal.png" alt="people" />
+        </li>
+        <li>
+          <img id="messagesNavbarImage" src="img/feather.png" alt="messages" />
+        </li>
+        <li>
+          <img id="soundsNavbarImage" src="img/radio.png" alt="sounds" />
+        </li>
+      </ul>
+    </nav>
+
+    <script src="matrix.js"></script>
+    <script src="bounce.js"></script>
+    <script src="typing.js"></script>
+    <script src="player.js"></script>
+    <script src="windows.js"></script>
+    <script src="images.js"></script>
+    <script src="messages.js"></script>
+  </body>
+</html>
